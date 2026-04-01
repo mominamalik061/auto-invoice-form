@@ -1,1 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aasaan Invoice</title>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+  /* BODY */
+   body {
+      min-height: 100vh;
+      background-color: #0d47a1;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+   *{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+/* HEADER */
+    .header {
+      background: #2d8bd3;
+      padding: 10px 20px;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* LOGO */
+    .logo {
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+
+    .logo img {
+      width: 120px;
+    }
+
+    .logo span {
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    /* NAV LINKS */
+    .nav-links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      display: block;
+    }
+
+    /* DROPDOWN */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 35px;
+      background: white;
+      border-radius: 6px;
+      min-width: 200px;
+      overflow: hidden;
+    }
+
+    .dropdown-menu li a {
+      color: black;
+      padding: 12px;
+    }
+
+    .dropdown-menu li a:hover {
+      background: #f0f0f0;
+    }
+
+    /* SHOW DROPDOWN */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+
+/* MOBILE RESPONSIVE */
+@media(max-width:768px){
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .nav-links{
+    position:absolute;
+    top:60px;
+    right:0;
+    background:#0d1b2a;
+    flex-direction:column;
+    width:100%;
+    display:none;
+    padding:20px;
+  }
+
+  .nav-links.active{
+    display:flex;
+  }
+
+  .dropdown-menu{
+    position:static;
+    background:#1b263b;
+  }
+
+  .dropdown-menu li a{
+    color:white;
+  }
+
+}
+
+/* FORM CONTAINER */
+.form-container #form {
+  
+  width: 90%;
+  max-width: 400px;
+  background: #eee;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 50px auto;
+  box-sizing: border-box;
+}
+  
+
+
+input, select, button {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+button {
+  background: #1c1c4d;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background:#F56D43;
+}
+
+  /* INVOICE */
+  #invoice {
+    display: none;
+    background: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+    box-sizing: border-box;
+    border-radius: 10px;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff6b3d;
+  }
+
+
+.section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+  .section > div {
+    flex: 1;
+    min-width: 200px; 
+  }
+
+  h4 {
+    color: #ff6b3d;
+    margin-bottom: 5px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background: #1c1c4d;
+    color: #fff;
+  }
+
+  .totals {
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-top: 20px;
+    background: #f1f1f1;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
+  .totals div {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+
+  .footer {
+    background: #1c1c4d;
+    color: white;
+    padding: 15px;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-size: 14px;
+    border-radius: 0 0 10px 10px;
+  }
+
+  .footer span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1 1 200px;
+    min-width: 150px;
+    margin-bottom: 5px;
+  }
+
+  /* MOBILE RESPONSIVENESS */
+@media (max-width: 600px) {
+    .form-container {
+        width: 95%;   
+        padding: 20px;
+        margin: 30px auto; 
+    }
+
+    input, select, button {
+        font-size: 15px; 
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+}
+
+  /* MEDIA QUERIES */
+  @media (max-width: 600px) {
+    .top, .section {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    button {
+      margin-left: 0;
+    }
+    .totals {
+      max-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+
+  .section {
+    grid-template-columns: 1fr; /* 1 column */
+  }
+
+}
+</style>
+</head>
+<body>
+  <div class="header" id="header">
+  <nav class="navbar">
+
+  <!-- LOGO -->
+  <div class="logo">
+    <img src="logoAassan.png" alt="Logo">
+    <span>Travel & General Services</span>
+  </div>
+
+  <!-- MENU BUTTON -->
+ 
+
+  <!-- NAV LINKS -->
+  <ul class="nav-links" id="navLinks">
+
+    <li class="dropdown">
+      <a href="#">Services ▼</a>
+
+      <ul class="dropdown-menu">
+        <li><a href="#">Medical</a></li>
+        <li><a href="#">Visa & Sponsorship</a></li>
+        <li><a href="#">Government Services</a></li>
+      </ul>
+
+    </li>
+
+  </ul>
+
+</nav>  
+
+</div>
+
+<!-- FORM -->
+    <div class="form-container">
+      <form id="form">
+        <h1 >Khalid Al Zahrani </h1>
+    <div style="width:100%; text-align:right; direction:rtl;">
+  خالد الزهراني
+</div>
+
+      <label>Name</label>
+        <input type="text" id="name" placeholder="Client Name" required>
+
+        <label>Services</label>
+        <select id="service">
+            <option>MEDICAL</option>
+            <option>VISA & SPONSORSHIP</option>
+            <option>GOVERNMENT SERVICES</option>
+        </select>
+
+        <label>Price</label>
+        <input type="number" id="price" placeholder="Price" required>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+<!-- INVOICE -->
+    <div id="invoice">
+
+      <div class="top">
+        <h2>INVOICE</h2>
+        <div class="logo">
+        <img src="logoAassan.png">
+      </div>
+      </div>
+
+      <div class="section">
+        <div>
+          <h4>Services From</h4>
+          <b>Aasaan</b><br>
+          Travels & General Services
+        </div>
+
+        <div>
+          <h4>Bill To</h4>
+          <span id="client"></span>
+        </div>
+
+        <div>
+          <h4>Invoice Date</h4>
+          <span id="date"></span>
+        </div>
+      </div>
+
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>QTY</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td id="desc"></td>
+          <td>1</td>
+          <td id="priceCell"></td>
+          <td id="totalCell"></td>
+        </tr>
+      </table>
+
+      <div class="totals">
+        <div>
+          <span>Subtotal</span>
+          <span id="subtotal"></span>
+        </div>
+        <div>
+          <span>Other</span>
+          <span>0</span>
+        </div>
+        <div>
+          <b>Total</b>
+          <b id="finalTotal"></b>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>📞 0593118215 / 0593150151</span>
+        <span>🌐 www.aasaantravels.com</span>
+        <span>📍 Office No: 109, Hotel Di Palace, Batha, Riyadh</span>
+      </div>
+
+    </div>
+
+<script>
+document.getElementById("form").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  let name = document.getElementById("name").value;
+  let service = document.getElementById("service").value;
+  let price = document.getElementById("price").value;
+
+  // SET DATA
+  document.getElementById("client").innerText = name;
+  document.getElementById("date").innerText = new Date().toLocaleDateString();
+  document.getElementById("desc").innerText = service + " - " + name;
+
+  document.getElementById("priceCell").innerText = price;
+  document.getElementById("totalCell").innerText = price;
+
+  document.getElementById("subtotal").innerText = price;
+  document.getElementById("finalTotal").innerText = price + "/-";
+
+  // HIDE FORM + HEADER
+  document.getElementById("form").style.display = "none";
+  document.getElementById("header").style.display = "none";
+
+  // SHOW INVOICE
+  document.getElementById("invoice").style.display = "block";
+
+  // PDF DOWNLOAD
+  setTimeout(() => {
+    const element = document.getElementById("invoice");
+
+    const opt = {
+      margin: 0,
+      filename: 'Aasaan-Invoice.pdf',
+      image: { type: 'jpeg', quality: 1 },
+      html2canvas: { 
+        scale: 3,
+        useCORS: true
+      },
+      jsPDF: { 
+        unit: 'px', 
+        format: [794, 1123],
+        orientation: 'portrait'
+      }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }, 800);
+
+});
+</script>
+
+</body>
+</html>
